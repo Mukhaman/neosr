@@ -10,31 +10,30 @@ fast_matmul = true
 
 [datasets.train]
 type = "paired"
-dataroot_gt = 'C:\datasets\gt\'
-dataroot_lq = 'C:\datasets\lq\'
-patch_size = 32
-batch_size = 8
-#accumulate = 1
-augmentation = [ "none", "mixup", "cutmix", "resizemix", "cutblur" ]
-aug_prob = [ 0.5, 0.1, 0.1, 0.1, 0.5 ]
+dataroot_gt = '/kaggle/input/dataset-2/input_2.5m'
+dataroot_lq = '/kaggle/input/dataset-2/input_10m'
+patch_size = 100
+batch_size = 2
+accumulate = 4
+#augmentation = [ "none", "mixup", "cutmix", "resizemix", "cutblur" ]
+#aug_prob = [ 0.5, 0.1, 0.1, 0.1, 0.5 ]
 
 [datasets.val]
 name = "val"
 type = "paired"
-dataroot_gt = 'C:\datasets\val\gt\'
-dataroot_lq = 'C:\datasets\val\lq\'
+dataroot_gt = /kaggle/input/dataset-2/val_hr'
+dataroot_lq = '/kaggle/input/dataset-2/val_lq'
 [val]
-val_freq = 1000
-#tile = 200
-#[val.metrics.psnr]
-#type = "calculate_psnr"
-#[val.metrics.ssim]
-#type = "calculate_ssim"
-#[val.metrics.dists]
-#type = "calculate_dists"
-#better = "lower"
-#[val.metrics.topiq]
-#type = "calculate_topiq"
+val_freq = 2500
+[val.metrics.psnr]
+type = "calculate_psnr"
+[val.metrics.ssim]
+type = "calculate_ssim"
+[val.metrics.dists]
+type = "calculate_dists"
+better = "lower"
+[val.metrics.topiq]
+type = "calculate_topiq"
 
 [path]
 #pretrain_network_g = 'experiments\pretrain_g.pth'
@@ -56,7 +55,7 @@ wavelet_init = 80000
 #sam_init = 1000
 #eco = true
 #eco_init = 15000
-#match_lq_colors = true
+match_lq_colors = true
 
 [train.optim_g]
 type = "adan_sf"
@@ -64,7 +63,7 @@ lr = 1e-3
 betas = [ 0.98, 0.92, 0.99 ]
 weight_decay = 0.01
 schedule_free = true
-warmup_steps = 1600
+warmup_steps = 0
 
 [train.optim_d]
 type = "adan_sf"
@@ -72,7 +71,7 @@ lr = 1e-4
 betas = [ 0.98, 0.92, 0.99 ]
 weight_decay = 0.01
 schedule_free = true
-warmup_steps = 600
+warmup_steps = 0
 
 #  losses
 [train.mssim_opt]
@@ -126,8 +125,12 @@ loss_weight = 0.3
 #loss_weight = 1.0
 
 [logger]
-total_iter = 1000000
+total_iter = 3000
 save_checkpoint_freq = 1000
 use_tb_logger = true
-#save_tb_img = true
-#print_freq = 100
+save_tb_img = false
+print_freq = 200
+
+[logger.wandb]
+project = "NeoSR"
+resume_id = 1
