@@ -21,7 +21,8 @@ accumulate = 4
 [datasets.val]
 name = "val"
 type = "paired"
-dataroot_gt = /kaggle/input/dataset-2/val_hr'
+save_img = false
+dataroot_gt = '/kaggle/input/dataset-2/val_hr'
 dataroot_lq = '/kaggle/input/dataset-2/val_lq'
 [val]
 val_freq = 2500
